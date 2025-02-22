@@ -2,16 +2,28 @@ import Flood from "../models/Flood.js";
 
 // GET "/floods"
 export const getFloods = async function (req, res) {
-  const floods = await Evac.find({});
+  const floods = await Flood.find({});
+  console.log("image: ", floods.image);
   res.status(200).json(floods);
 };
 
 // POST "/flood/add"
 export const addFloods = async function (req, res) {
   try {
-    const floods = await Evac.create(req.body);
+    const { author_id, status, comment } = req.body;
+    const path = JSON.parse(req.body.path);
 
-    res.status(200).json(floods);
+    const new_flood = new Flood({
+      author_id: author_id,
+      path: path,
+      status: status,
+      comment: comment,
+      image: req.file?.buffer,
+    });
+
+    const saved_flood = await new_flood.save();
+
+    res.status(201).json(saved_flood);
   } catch (err) {
     console.error(err);
     res.status(500).json({

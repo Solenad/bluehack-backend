@@ -8,7 +8,7 @@ import {
 import { getFloods, addFloods, deleteFloodById } from "../services/flood.js";
 import { getRoutes, createRoute, deleteRouteById } from "../services/route.js";
 import { upload } from "../config/storage.js";
-import { uploadSingleFile } from "../services/upload.js";
+import { uploadSingleFile, getFileByFilename } from "../services/upload.js";
 
 const router = express.Router();
 
@@ -39,5 +39,6 @@ router.delete("/routes", deleteRouteById);
 
 // Upload route
 router.post("/upload", upload.single("file"), uploadSingleFile);
+router.get("/file/:filename", getFileByFilename);
 
 export default router;
