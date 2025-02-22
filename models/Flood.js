@@ -16,12 +16,12 @@ const floodSchema = mongoose.Schema({
   status: {
     type: String,
     enum: [
-      "Passable",
-      "Ankle-Deep",
-      "Knee-Deep",
-      "Waist-Deep",
-      "Chest-Deep",
-      "Unknown",
+      "Passable (Mapadaan, No Flood)",
+      "Ankle-Deep (Bababaw, Still Walkable)",
+      "Knee-Deep (Hirap Na, Hard to Walk)",
+      "Waist-Deep (Delikado, Dangerous Level)",
+      "Chest-Deep (Bawal Na, No Entry)",
+      "Unknown (Hindi Sigurado, Needs Verification)",
     ],
     required: true,
   },
