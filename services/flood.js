@@ -10,8 +10,7 @@ export const getFloods = async function (req, res) {
 // POST "/flood/add"
 export const addFloods = async function (req, res) {
   try {
-    const { author_id, status, comment } = req.body;
-    const path = JSON.parse(req.body.path);
+    const { author_id, path, status, comment } = req.body;
 
     const new_flood = new Flood({
       author_id: author_id,
