@@ -19,7 +19,7 @@ const floodPingSchema = mongoose.Schema({
     required: true,
   },
   comment: String,
-  image: { data: Buffer, imgType: String },
+  image: { type: mongoose.Schema.Types.ObjectId, ref: "uploads.files" },
 });
 floodPingSchema.index({ path: "2dsphere" });
 export default mongoose.model("FloodPing", floodPingSchema);

@@ -1,4 +1,5 @@
 import Route from "../models/Route.js";
+import axios from "axios";
 
 // GET "/routes"
 export const getRoutes = async function (req, res) {
@@ -33,5 +34,45 @@ export const deleteRouteById = async function (req, res) {
     return res.status(200).json({ message: "Route deleted." });
   } catch (err) {
     return res.status(500).json({ message: `Error deleting Route: ${err}` });
+  }
+};
+
+export const getDirections = async (req, res) => {
+  const url = `https://maps.googleapis.com/maps/api/directions/json`;
+  const { origin, destination } = req.query;
+  const { avoid } = req.body;
+
+  if (!origin || !destination) {
+    return res
+      .status(400)
+      .json({ error: "Origin and destination are required" });
+  }
+
+  try {
+    const waypoints = avoid
+      ? avoid.map((point) => `via:${point[0]},${point[1]}`).join("|")
+      : null;
+
+    const response = await axios.get(url, {
+      params: {
+        origin: origin,
+        destination: destination,
+        key: process.env.GOOGLE_API_KEY,
+        mode: "walking",
+        alternatives: false,
+        waypoints: waypoints,
+        optimize: true,
+      },
+    });
+
+    if (response.data.status === "OK") {
+      return res.status(200).json(response.data);
+    } else {
+      return res.status(400).json({ error: response.data.status });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: `Error fetching directions: ${error.message}` });
   }
 };

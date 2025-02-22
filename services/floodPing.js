@@ -1,10 +1,35 @@
 import FloodPing from "../models/FloodPing.js";
+import { gfs } from "../config/storage.js";
 
 // GET "/floods"
 export const getFloodPings = async function (req, res) {
-  const floods = await FloodPing.find({});
-  console.log("image: ", floods.image);
-  res.status(200).json(floods);
+  try {
+    // Retrieve all flood pings
+    const floodPings = await FloodPing.find({});
+
+    // For each flood ping, retrieve the associated image from GridFS
+    const floodPingsWithImages = await Promise.all(
+      floodPings.map(async (ping) => {
+        if (ping.image) {
+          const file = await gfs.find({ _id: ping.image }).toArray();
+          if (file.length > 0) {
+            const imageUrl = `/api/files/${file[0].filename}`; // Generate the image URL
+            return {
+              ...ping._doc,
+              imageUrl, // Add the image URL to the flood ping
+            };
+          }
+        }
+        return ping._doc;
+      }),
+    );
+
+    res.status(200).json(floodPingsWithImages);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
 };
 
 // POST "/flood/add"

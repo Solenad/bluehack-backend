@@ -5,6 +5,7 @@ import {
   addEvacAreas,
   deleteEvacById,
 } from "../services/evac.js";
+import { getDirections } from "../services/route.js";
 import { getFloods, addFloods, deleteFloodById } from "../services/flood.js";
 import { getRoutes, createRoute, deleteRouteById } from "../services/route.js";
 import {
@@ -50,5 +51,8 @@ router.delete("/routes", deleteRouteById);
 // Upload route
 router.post("/upload", upload.single("file"), uploadSingleFile);
 router.get("/file/:filename", getFileByFilename);
+
+// route route
+router.get("/route", getDirections);
 
 export default router;
