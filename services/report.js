@@ -3,7 +3,7 @@ import Report from "../models/Report.js";
 // GET "/evac-areas"
 export const getReports = async function (req, res) {
   const reports = await Report.find();
-  res.status(200).json(Report);
+  res.status(200).json(reports);
 };
 
 export const addReport = async function (req, res) {
