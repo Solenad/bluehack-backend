@@ -15,6 +15,7 @@ import {
 } from "../services/floodPing.js";
 import { upload } from "../config/storage.js";
 import { uploadSingleFile, getFileByFilename } from "../services/upload.js";
+import { getReports, addReport, deleteReportById } from "../services/report.js";
 
 const router = express.Router();
 
@@ -54,5 +55,10 @@ router.get("/file/:filename", getFileByFilename);
 
 // route route
 router.get("/route", getDirections);
+
+// Report routes
+router.post("/reports", addReport);
+router.get("/reports", getReports);
+router.delete("/reports", deleteReportById);
 
 export default router;

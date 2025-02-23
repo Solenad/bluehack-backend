@@ -1,5 +1,6 @@
 import Route from "../models/Route.js";
 import axios from "axios";
+import "dotenv/config";
 
 // GET "/routes"
 export const getRoutes = async function (req, res) {

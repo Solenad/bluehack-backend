@@ -36,7 +36,7 @@ export const getFloodPings = async function (req, res) {
 export const addFloodPing = async function (req, res) {
   try {
     const { author_id, path, status, comment } = req.body;
-
+    console.log(comment);
     const new_flood = new FloodPing({
       author_id: author_id,
       path: path,
@@ -44,6 +44,9 @@ export const addFloodPing = async function (req, res) {
       comment: comment,
       image: req.file?.buffer,
     });
+
+    console.log(author_id);
+    console.log(path);
 
     const saved_flood = await new_flood.save();
 
